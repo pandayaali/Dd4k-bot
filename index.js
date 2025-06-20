@@ -315,3 +315,17 @@ console.log("🤖 Bot is running...");
 
 process.once("SIGINT", () => bot.stop("SIGINT"));
 process.once("SIGTERM", () => bot.stop("SIGTERM"));
+
+// ✅ Set Bot Menu Commands
+bot.telegram.setMyCommands([
+  { command: "help", description: "📖 How to use the bot" },
+  { command: "about", description: "🤖 About DD4K Bot" },
+  { command: "stats", description: "📊 Show stats (admin only)" },
+  { command: "setadmin", description: "🔧 Set channels (admin only)" },
+  { command: "batch", description: "📦 Create new batch (admin only)" },
+  { command: "deletebatch", description: "🗑️ Delete a batch (admin only)" },
+  { command: "batches", description: "🎬 Show all batches (admin only)" },
+  { command: "customcaption", description: "✍️ Set download caption (admin only)" },
+  { command: "backupjson", description: "📥 Backup files (admin only)" },
+  { command: "migrate", description: "🔄 Restore backups (admin only)" }
+]);
