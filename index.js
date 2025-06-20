@@ -95,18 +95,31 @@ bot.command("stats", ctx => {
 });
 
 // ✅ /setadmin
-bot.command("setadmin", ctx => {
+let step = ""; // Step controller
+
+bot.command("setadmin", async (ctx) => {
   if (!isAdmin(ctx.from.id)) return sendRoast(ctx);
-  ctx.reply("➡️ Forward *any message* from Storage Channel");
-  bot.once("message", msg1 => {
-    settings.storage_channel_id = msg1.forward_from_chat.id;
-    ctx.reply("➡️ Now forward *any message* from Log Channel");
-    bot.once("message", msg2 => {
-      settings.log_channel_id = msg2.forward_from_chat.id;
-      saveJSON("settings.json", settings);
-      ctx.reply("✅ Channels saved. Ready for /batch");
-    });
-  });
+  step = "awaiting_storage";
+  await ctx.reply("➡️ Forward *any message* from your Storage Channel");
+});
+
+// Listen for forwards
+bot.on("message", async (ctx) => {
+  if (!step) return;
+
+  const fwd = ctx.message.forward_from_chat;
+  if (!fwd) return ctx.reply("⚠️ Please forward a message from your channel.");
+
+  if (step === "awaiting_storage") {
+    settings.storage_channel_id = fwd.id;
+    step = "awaiting_log";
+    await ctx.reply("✅ Storage channel saved.\n➡️ Now forward *any message* from your Log Channel");
+  } else if (step === "awaiting_log") {
+    settings.log_channel_id = fwd.id;
+    saveJSON("settings.json", settings);
+    step = "";
+    await ctx.reply("✅ Log channel saved successfully!\n\nYou're ready to use /batch 💥");
+  }
 });
 
 // ✅ /batch (Create)
