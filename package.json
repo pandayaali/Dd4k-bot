@@ -1,0 +1,16 @@
+{
+  "name": "dd4k-file-store-bot",
+  "version": "1.0.0",
+  "description": "DD4K Family's Secret File Storing & Sharing Bot",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "telegraf": "^4.12.3",
+    "node-fetch": "^2.6.7"
+  },
+  "engines": {
+    "node": "18.x"
+  }
+}
